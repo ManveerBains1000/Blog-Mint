@@ -1,9 +1,10 @@
 import React,{useState,useEffect} from 'react';
 import { useDispatch } from 'react-redux';
-import authService from './appWrite/auth'
+import authService from './api/auth'
 import {login,logout} from './store/authSlice'
 import {Header,Footer} from './components/index.js'
 import { Outlet } from 'react-router-dom';
+import config from './config/config.js';
 const App = () => {
   const [loading,setLoading] = useState(true);
   const dispatch = useDispatch()

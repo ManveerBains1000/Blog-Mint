@@ -1,18 +1,18 @@
 import axios from 'axios';
-
+import config from '../config/config.js';
 
 export class AuthService {
 
   constructor() {
     this.api = axios.create({
-      baseURL: "http://localhost:4000/api/v1/user",
+      baseURL: config.BACKEND_URL,
       withCredentials: true,
     });
   }
 
   async createAccount({ email, password, username }) {
     try {
-      const userAccount = await this.api.post("/register",{
+      const userAccount = await this.api.post("user/register",{
         username:username,
         email:email,
         password:password,
@@ -27,7 +27,7 @@ export class AuthService {
 
   async login({ email, password }) {
     try {
-      const response = await this.api.post("/login",{
+      const response = await this.api.post("user/login",{
         email,
         password
       });
@@ -39,14 +39,14 @@ export class AuthService {
   }
 async getCurrentUser() {
   try {
-    return  await this.api.post("/get-user");
+    return  await this.api.post("user/get-user");
   } catch (error) {
     return null;
   }
 }
   async logout() {
     try {
-      const response = await this.api.post("/logout");
+      const response = await this.api.post("user/logout");
       return response.data;
     } catch (error) {
       console.log("service :: logout :: error", error);

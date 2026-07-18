@@ -5,6 +5,7 @@ const config = {
     appWriteDatabaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
     appWriteBucketId: import.meta.env.VITE_APPWRITE_BUCKET_ID,
     tinyMceApiKey: import.meta.env.VITE_TINYMCE_API_KEY,
+    BACKEND_URL: import.meta.env.VITE_BACKEND_URL,
 }
 
 export default config;
