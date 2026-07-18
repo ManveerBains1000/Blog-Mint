@@ -2,8 +2,8 @@ import React from 'react'
 
 const Logo = ({width = '100px'}) => {
   return (
-    <div className='text-black ml-2 bg-blue-100 rounded-xl p-2'>
-      Logo
+    <div className='ml-2 rounded-xl bg-white px-3 py-2 text-xs font-semibold tracking-[0.2em] text-black'>
+      LOGO
     </div>
   )
 }

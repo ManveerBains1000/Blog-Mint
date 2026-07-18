@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
 import { Button, Input, Logo } from "./index";
 import { useDispatch } from "react-redux";
-import authService from "../appWrite/auth";
+import authService from "../api/auth";
 import { useForm } from "react-hook-form";
 
 function SignUp() {
@@ -18,9 +18,14 @@ function SignUp() {
         try {
             const userData = await authService.createAccount(data);
             if (userData) {
-                const currentUser = await authService.getCurrentUser();
-                if (currentUser) dispatch({currentUser});
-                navigate('/');
+                const loginUser = await authService.login(data);
+                if (loginUser){
+                  console.log(loginUser);
+                  const currentUser = await authService.getCurrentUser();
+                  console.log(currentUser);
+                  if (currentUser) dispatch(authLogin(currentUser));
+                  navigate('/');
+                }
             }
         } catch (error) {
             setError(error.message);
@@ -29,7 +34,7 @@ function SignUp() {
   return (
     <div className="w-full flex items-center justify-center ">
       <div
-        className={`mx-auto w-full max-w-lg bg-gary-100 rounded-xl p-10 border border-black/10`}
+        className='mx-auto w-full max-w-lg rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-10'
       >
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-25">
@@ -43,10 +48,10 @@ function SignUp() {
         <form onSubmit={handleSubmit(createAccount)} className="mt-8">
           <div className="space-y-5">
             <Input
-                label="name: "
-                placeholder="Enter your full name"
+                label="username: "
+                placeholder="Enter your user name"
                 type="text"
-                {...register("name",{required:true})}
+                {...register("username",{required:true})}
             />
             <Input
               label="email: "

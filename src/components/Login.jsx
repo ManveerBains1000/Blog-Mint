@@ -3,7 +3,7 @@ import { Link, matchPath, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
 import { Button, Input, Logo } from "./index";
 import { useDispatch } from "react-redux";
-import authService from "../appWrite/auth";
+import authService from "../api/auth";
 import { useForm } from "react-hook-form";
 export default function Login() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <div className="w-full flex items-center justify-center ">
       <div
-        className={`mx-auto w-full max-w-lg bg-gary-100 rounded-xl p-10 border border-black/10`}
+        className='mx-auto w-full max-w-lg rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-10'
       >
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-25">
@@ -39,11 +39,11 @@ export default function Login() {
         <h2 className="text-center text-2xl font-bold leading-tight">
           Sign in to your account
         </h2>
-        <p className="mt-2 text-center text-base text-block/60">
+        <p className="mt-2 text-center text-base text-[var(--theme-muted)]">
           Don&apos;t have any account? &nbsp;
           <Link
             to="/signup"
-            className="fond-medium text-primary transition-all duration-200 hover:underline"
+            className="font-medium text-[var(--theme-text)] transition-all duration-200 hover:underline"
           >
             Sign Up
           </Link>

@@ -34,7 +34,7 @@ const Header = () => {
     }
   ]
   return (
-    <header className='py-3 shadow bg-gary-500'>
+    <header className='py-4 border-b border-[var(--theme-border)] bg-[var(--theme-bg)]'>
       <Container>
         <nav className='flex'>
           <div className='mr-4'>
@@ -44,7 +44,7 @@ const Header = () => {
             {navItems.map((item) => (
               item.active ? <li key={item.name}><button
               onClick={() => navigate(item.slug)}
-               className='inline-block px-6 py-2 duration-200 text-black font-bold hover:bg-blue-100 rounded-full'>{item.name}</button></li> : null
+               className='inline-block px-6 py-2 text-sm font-semibold tracking-wide text-[var(--theme-text)] transition duration-200 hover:bg-white/10 hover:text-white rounded-full'>{item.name}</button></li> : null
             ))}
             {
               authStatus && (<li><LogoutBtn/></li>)

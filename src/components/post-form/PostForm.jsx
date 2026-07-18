@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import {Button,Input,Select,RTE} from '../index'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import appwriteService from '../../appWrite/appWriteConfig'
+import appwriteService from '../../api/appWriteConfig'
 
 function PostForm({ post } = {}) {
   const isEditing = Boolean(post?.$id);
@@ -112,7 +112,7 @@ function PostForm({ post } = {}) {
             {...register("status",{required:true})}
           />
 
-          <Button type='submit' bgColor={isEditing ? "bg-green-500" : undefined} className='w-full'>
+          <Button type='submit' bgColor={isEditing ? "bg-green-500" : undefined} textColor={isEditing ? "text-white" : undefined} className='w-full'>
             {isEditing ? "update" : "submit"}
           </Button>
       </div>

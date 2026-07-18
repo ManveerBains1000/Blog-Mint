@@ -14,8 +14,8 @@ const Select = ({
         <select
         {...props}
         id = {id}
-        className={`${className} px-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gary-50 
-        duration-200 border border-gary-200 w-full`}
+        className={`${className} px-3 py-2 rounded-lg bg-[var(--theme-surface)] text-[var(--theme-text)] outline-none focus:bg-[var(--theme-bg)] 
+        duration-200 border border-[var(--theme-border)] w-full`}
         ref = {ref}
         >
             {options?.map((option)=>(
