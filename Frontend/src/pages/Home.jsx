@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import appwriteService from '../api/appWriteConfig'
+import postService from '../api/postApi.js'
 import { Container,PostCard } from '../components'
 import { useSelector } from 'react-redux';
 
@@ -9,13 +9,18 @@ function Home() {
     const authStatus = useSelector((state)=>state.authReducer.status);
 
     useEffect(()=>{
-        appwriteService.getPosts().then((p)=>{
-            if (p) {
-                setPosts(p.rows)
-    
+        const fetchPosts = async () => {
+            try {
+                const response = await postService.getPosts();
+                setPosts(response.data.data);
+                }
+            catch (error) {
+                console.log("Error in fetching posts",error);
             }
-        })
+        }
+        fetchPosts();
     },[])
+   
     if (authStatus !== true) {
         return (
             <div className='w-full py-8 mt-4 text-center'>
@@ -36,7 +41,7 @@ function Home() {
         <Container>
             <div className='flex flex-wrap'>
                 {posts.map((post) => (
-                    <div key={post.$id} className='p-2 w-1/4'>
+                    <div key={post.slug} className='p-2 w-1/4'>
                         <PostCard {...post}/>
                     </div>
                 ))}

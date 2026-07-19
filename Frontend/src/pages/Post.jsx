@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import appwriteService from "../api/appWriteConfig.js";
+import postService from "../api/postApi.js";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
@@ -11,41 +11,38 @@ export default function Post() {
     const navigate = useNavigate();
 
     const userData = useSelector((state) => state.authReducer.userData);
-
-    const isAuthor = post && userData ? post.userId === userData.$id : false;
-
+    const isAuthor = (post && userData) ? (post?.owner?._id === userData.userData.data.data._id) : false;
+ 
     useEffect(() => {
         if (slug) {
-            appwriteService.getPost(slug).then((post) => {
-                if (post) setPost(post);
+            postService.getPost(slug).then((post) => {
+                if (post) setPost(post.data.data);
                 else navigate("/");
             });
         } else navigate("/");
+        
     }, [slug, navigate]);
-
     const deletePost = () => {
-        appwriteService.deletePost(post.$id).then((status) => {
+        postService.deletePost(post.$id).then((status) => {
             if (status) {
-                appwriteService.deleteFile(post.featuredImage);
+                postService.deleteFile(post.featuredImage);
                 navigate("/");
             }
         });
     };
-    console.log(post?.featuredImage)
-    console.log(appwriteService.previewFile(post?.featuredImage))
     return post ? (
         <div className="py-8">
             <Container>
                 <div className="w-50 h-50 flex justify-center mb-4 relative rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-2">
                     <img
-                        src={appwriteService.previewFile(post.featuredImage)}
+                        src={post.featuredImage}
                         alt={post.title}
                         className="rounded-xl"
                     />
 
                     {isAuthor && (
                         <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`}>
+                            <Link to={`/edit-post/${post._id}`}>
                                 <Button bgColor="bg-green-500" textColor="text-white" className="mr-3">
                                     Edit
                                 </Button>

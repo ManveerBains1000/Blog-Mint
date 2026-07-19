@@ -3,10 +3,11 @@ import { useForm } from 'react-hook-form'
 import {Button,Input,Select,RTE} from '../index'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import appwriteService from '../../api/appWriteConfig'
+import parse from 'html-react-parser'
+import postService from '../../api/postApi.js'
 
 function PostForm({ post } = {}) {
-  const isEditing = Boolean(post?.$id);
+  const isEditing = Boolean(post?._id);
   const {register,handleSubmit,watch,setValue,control,getValues} = useForm({
     defaultValues:{
       title: post?.title || "",
@@ -18,36 +19,22 @@ function PostForm({ post } = {}) {
     const navigate = useNavigate();
     const userData = useSelector((state)=> state.authReducer.userData);
    
-    const submit = async (data) => {
-      if (isEditing) {
-        const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
-
-        if (file) {
-          appwriteService.deleteFile(post.featuredImage);
-        }
-
-        const rowId = post?.slug || post?.$id;
-        const dbPost = await appwriteService.updatePost(rowId,{
-          ...data,
-          featuredImage: file ? file.$id : post.featuredImage,
+    const submit = async (data) => { 
+      try {
+      
+        const response = await postService.createPost({
+          title:data.title,
+          slug:data.slug,
+          content:data.content,
+          status:data.status,
+          featuredImage:data.featuredImage[0],
         });
+        
+        
+         if(response) navigate(`/post/${data.slug}`);
 
-        if (dbPost) {
-          navigate(`/post/${dbPost.$id}`);
-        }
-      } else {
-        const file = await appwriteService.uploadFile(data.image[0]);
-
-        if (file) {
-          const fileId = file.$id;
-          
-          data.featuredImage = fileId;
-          const dbPost = await appwriteService.createPost({...data,userId: userData.$id});
-
-         if (dbPost) {
-          navigate(`/post/${dbPost.$id}`);
-         } 
-        }
+      } catch (error) {
+        console.log("add Post error",error);
       }
     }
 
@@ -96,12 +83,12 @@ function PostForm({ post } = {}) {
           type="file"
           className="mb-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image",{required: !isEditing})}
+          {...register("featuredImage",{required: !isEditing})}
           />
           
           {isEditing && (
             <div className='w-full mb-4'>
-              <img src={appwriteService.previewFile(post.featuredImage)} alt={post.title}  className='rounded-lg'/>
+              <img src={post?.featuredImage} alt={post?.title}  className='rounded-lg'/>
             </div>
           )}
 
