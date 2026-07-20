@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Container,PostCard} from '../components/index'
+import { Container, PostCard } from '../components/index'
 import postService from '../api/postApi.js'
 
 
@@ -18,21 +18,25 @@ function AllPosts() {
         }
         fetchPosts();
     },[])
-  return (
-    <div className='w-full py-8'>
-      <Container>
-        <div className='flex flex-wrap'>
-            {
-                posts.map((post)=>(
-                    <div key={post.slug} className='p-2 w-1/4'>
-                        <PostCard {...post}/>
-                    </div>
-                ))
-            }
+    return (
+        <div className='w-full py-6 px-4 sm:px-6 lg:px-10'>
+            <Container>
+            <div className='mb-8'>
+                    <p className='text-xs font-semibold uppercase tracking-[0.3em] text-[var(--theme-muted)]'>All posts</p>
+                    <h1 className='mt-3 text-4xl font-bold'>Latest writing from the community</h1>
+                </div>
+            <div className='grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]'>
+                        {
+                                posts.map((post)=>(
+                                        <div key={post.slug}>
+                                                <PostCard {...post}/>
+                                        </div>
+                                ))
+                        }
+                </div>
+                </Container> 
         </div>
-        </Container> 
-    </div>
-  )
+    )
 }
 
 export default AllPosts

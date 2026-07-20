@@ -31,34 +31,56 @@ export default function Post() {
         });
     };
     return post ? (
-        <div className="py-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
             <Container>
-                <div className="w-50 h-50 flex justify-center mb-4 relative rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-2">
-                    <img
-                        src={post.featuredImage}
-                        alt={post.title}
-                        className="rounded-xl"
-                    />
+                <div className="mx-auto max-w-5xl">
+                    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,_rgba(255,255,255,0.06)_0%,_rgba(255,255,255,0.03)_100%)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+                        <div className="relative">
+                            <div className="aspect-[16/9] w-full overflow-hidden bg-black">
+                                <img
+                                    src={post.featuredImage}
+                                    alt={post.title}
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
 
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post._id}`}>
-                                <Button bgColor="bg-green-500" textColor="text-white" className="mr-3">
-                                    Edit
-                                </Button>
-                            </Link>
-                            <Button bgColor="bg-red-500" textColor="text-white" onClick={deletePost}>
-                                Delete
-                            </Button>
+                            {isAuthor && (
+                                <div className="absolute right-4 top-4 flex flex-wrap gap-3 sm:right-6 sm:top-6">
+                                    <Link to={`/edit-post/${post._id}`}>
+                                        <Button bgColor="bg-white" textColor="text-black" className="shadow-lg shadow-black/20">
+                                            Edit
+                                        </Button>
+                                    </Link>
+                                    <Button bgColor="bg-black" textColor="text-white" onClick={deletePost}>
+                                        Delete
+                                    </Button>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                </div>
-                <div className="browser-css">
-                    {parse(post.content)}
+
+                        <div className="space-y-6 p-6 sm:p-8 lg:p-10">
+                            <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--theme-muted)]">
+                                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">Story</span>
+                                {post.owner?.username && (
+                                    <span>By {post.owner.username}</span>
+                                )}
+                                {post.createdAt && (
+                                    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                                )}
+                            </div>
+
+                            <div className="max-w-4xl">
+                                <h1 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">{post.title}</h1>
+                            </div>
+
+                            <div className="prose prose-invert max-w-none prose-p:text-[var(--theme-muted)] prose-headings:text-[var(--theme-text)] prose-a:text-white prose-img:rounded-2xl">
+                                <div className="browser-css">
+                                    {parse(post.content)}
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
             </Container>
         </div>
     ) : null;

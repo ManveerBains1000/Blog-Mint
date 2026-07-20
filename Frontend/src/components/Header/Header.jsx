@@ -1,50 +1,64 @@
 import React from 'react'
-import {Container,Logo, LogoutBtn} from '../index.js'
-import {Link} from 'react-router-dom'
+import { Container, Logo, LogoutBtn } from '../index.js'
+import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 const Header = () => {
   const authStatus = useSelector((state)=>state.authReducer.status)
-  const navigate = useNavigate();
+  const location = useLocation();
   const navItems = [
     {
       name:'Home',
       slug: '/',
-      active: true,
+      authOnly: false,
     },
     {
-      name : 'Login',
-      slug : '/login',
-      active: !authStatus,
+      name: 'All Posts',
+      slug: '/all-posts',
+      authOnly: true,
     },
     {
-      name : 'signup',
-      slug : '/signup',
-      active: !authStatus,
+      name: 'My Posts',
+      slug: '/user-posts',
+      authOnly: true,
     },
     {
-      name : 'All Posts',
-      slug : '/all-posts',
-      active: authStatus,
+      name: 'Add Post',
+      slug: '/add-post',
+      authOnly: true,
     },
     {
-      name : 'Add Post',
-      slug : '/add-post',
-      active: authStatus,
+      name: 'Login',
+      slug: '/login',
+      guestOnly: true,
+    },
+    {
+      name: 'Signup',
+      slug: '/signup',
+      guestOnly: true,
     }
   ]
   return (
-    <header className='py-4 border-b border-[var(--theme-border)] bg-[var(--theme-bg)]'>
+    <header className='sticky top-0 z-50 border-b border-white/10 bg-[color:rgba(5,5,5,0.72)] backdrop-blur-xl'>
       <Container>
-        <nav className='flex'>
-          <div className='mr-4'>
-            <Link to='/'><Logo width='70px'/></Link>
+        <nav className='flex items-center gap-4 px-4 py-3 lg:px-0'>
+          <div className='mr-2 flex items-center gap-3'>
+            <Link to='/' className='inline-flex items-center gap-3'>
+              <Logo width='28px'/>
+            </Link>
           </div>
-          <ul className='flex ml-auto'>
+          <div className='hidden h-10 w-px bg-white/10 lg:block' />
+          <ul className='ml-auto flex flex-wrap items-center gap-2'>
             {navItems.map((item) => (
-              item.active ? <li key={item.name}><button
-              onClick={() => navigate(item.slug)}
-               className='inline-block px-6 py-2 text-sm font-semibold tracking-wide text-[var(--theme-text)] transition duration-200 hover:bg-white/10 hover:text-white rounded-full'>{item.name}</button></li> : null
+              ((authStatus && !item.guestOnly) || (!authStatus && !item.authOnly)) ? (
+                <li key={item.name}>
+                  <Link
+                    to={item.slug}
+                    className={`inline-flex items-center rounded-full px-5 py-2 text-sm font-medium tracking-wide transition duration-200 ${location.pathname === item.slug ? '!bg-white !text-black shadow-[0_0_0_1px_rgba(255,255,255,0.14)]' : 'text-[var(--theme-text)] hover:bg-white/10 hover:text-white'}`}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ) : null
             ))}
             {
               authStatus && (<li><LogoutBtn/></li>)
