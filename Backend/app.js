@@ -17,6 +17,13 @@ app.use(cors({
 import userRouter from './src/routes/user.routes.js'
 import postRouter from './src/routes/post.routes.js'
 
+
+// health check api
+app.get('/health',(req,res)=>{
+    
+    res.send("app is running");
+})
+
 app.use('/api/v1/user',userRouter);
 app.use('/api/v1/post',postRouter);
 
