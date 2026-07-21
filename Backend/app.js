@@ -1,13 +1,15 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import { ENV } from './src/utils/env.js'
+
 const app = express()
 
 app.use(express.json({limit:'16kb'}))
 app.use(express.urlencoded({extended:true,limit:'16kb'}))
 app.use(cookieParser())
 app.use(cors({
-    origin: "https://blog-mint-eight.vercel.app/", 
+    origin: ENV.CORS_ORIGIN, 
     credentials: true
 }));
 
