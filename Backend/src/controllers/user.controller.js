@@ -16,6 +16,12 @@ const generateAccessAndRefreshToken = async (userId) => {
     return {accessToken,refreshToken}
 }
 
+const options = {
+  httpOnly:true,
+  secure:true,
+  sameSite: "none"
+}
+
 const registerUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -76,10 +82,6 @@ const loginUser = async (req,res,next) => {
 
         const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-        const options = {
-            httpOnly:true,
-            secure:true,
-        }
 
         return res
         .status(200)
@@ -117,11 +119,6 @@ const logoutUser = async (req,res,next) => {
       }
     );
 
-    const options = {
-      httpOnly:true,
-      secure:true
-    } 
-
     res.status(200)
     .clearCookie("accessToken",options)
     .clearCookie("refreshToken",options)
@@ -154,11 +151,6 @@ const refreshAccessToken = async (req,res,next) => {
     }    
 
     const {accessToken,refreshToken} = await generateAccessAndRefreshToken(user?._id);
-
-    const options = {
-      httpOnly:true,
-      secure:true
-    }
 
     return res.status(200)
     .cookie("accessToken",accessToken,options)
