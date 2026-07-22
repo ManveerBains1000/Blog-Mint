@@ -33,7 +33,7 @@ function UserPosts() {
         </div>
 
         {posts.length > 0 ? (
-          <div className='grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]'>
+          <div className='grid justify-left gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,320px))]'>
             {posts.map((post) => (
               <div key={post.slug}>
                 <PostCard {...post} />

@@ -25,7 +25,7 @@ function AllPosts() {
                     <p className='text-xs font-semibold uppercase tracking-[0.3em] text-[var(--theme-muted)]'>All posts</p>
                     <h1 className='mt-3 text-4xl font-bold'>Latest writing from the community</h1>
                 </div>
-            <div className='grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]'>
+                <div className='grid justify-center gap-5 [grid-template-columns:repeat(auto-fit,minmax(240px,320px))]'>
                         {
                                 posts.map((post)=>(
                                         <div key={post.slug}>

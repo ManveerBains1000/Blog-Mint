@@ -18,6 +18,7 @@ app.use(cors({
 // user routes
 import userRouter from './src/routes/user.routes.js'
 import postRouter from './src/routes/post.routes.js'
+import commentRouter from './src/routes/comment.routes.js'
 
 
 // health check api
@@ -28,6 +29,7 @@ app.get('/health',(req,res)=>{
 
 app.use('/api/v1/user',userRouter);
 app.use('/api/v1/post',postRouter);
+app.use('/api/v1/post',commentRouter);
 
 
 export {app};

@@ -58,6 +58,24 @@ export class Service {
         return false;
     }
 
+    async getCommentsByPost(postId) {
+        try {
+            return await this.api.get(`/post/${postId}/comments`);
+        } catch (error) {
+            console.log("getCommentsByPost error: ", error);
+            return false;
+        }
+    }
+
+    async createComment(postId, content) {
+        try {
+            return await this.api.post(`/post/${postId}/comments`, { content });
+        } catch (error) {
+            console.log("createComment error: ", error);
+            return false;
+        }
+    }
+
     async getPosts(){
         try {
             return await this.api.get("post");
