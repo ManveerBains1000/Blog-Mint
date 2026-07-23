@@ -4,7 +4,6 @@ import authService from './api/auth'
 import {login,logout} from './store/authSlice'
 import {Header,Footer} from './components/index.js'
 import { Outlet } from 'react-router-dom';
-import config from './config/config.js';
 const App = () => {
   const [loading,setLoading] = useState(true);
   const dispatch = useDispatch()
@@ -13,14 +12,14 @@ const App = () => {
     authService.getCurrentUser()
     .then((userData) => {
       if (userData) {
-        dispatch(login({userData}))
+        dispatch(login(userData))
       }
       else {
         dispatch(logout())
       }
     })
     .finally(() => setLoading(false))
-  },[]);
+  },[dispatch]);
 
   return !loading ? (<div className='min-h-screen flex flex-wrap content-between bg-[var(--theme-bg)] text-[var(--theme-text)]'>
     <div className='w-full block'>

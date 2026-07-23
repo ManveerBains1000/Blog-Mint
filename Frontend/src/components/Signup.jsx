@@ -13,22 +13,19 @@ function SignUp() {
     const {register,handleSubmit} = useForm();
 
     const createAccount = async(data) => {
-        console.log(data)
         setError("");
         try {
             const userData = await authService.createAccount(data);
             if (userData) {
                 const loginUser = await authService.login(data);
                 if (loginUser){
-                  console.log(loginUser);
                   const currentUser = await authService.getCurrentUser();
-                  console.log(currentUser);
-                  if (currentUser) dispatch(authLogin(currentUser));
+            if (currentUser) dispatch(authLogin(currentUser));
                   navigate('/');
                 }
             }
         } catch (error) {
-            setError(error.message);
+        setError(error?.response?.data?.message || error.message);
         }
     }
   return (

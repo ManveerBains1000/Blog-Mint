@@ -26,7 +26,7 @@ const registerUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
-    if ([username, password, email].some((field) => field.trim() === "")) {
+    if ([username, password, email].some((field) => typeof field !== "string" || field.trim() === "")) {
       throw new ApiError(400, "All fields are required");
     }
 
@@ -53,10 +53,10 @@ const registerUser = async (req, res, next) => {
 
     return res
       .status(201)
-      .json(new ApiResponse(user, 201, "user registered successfully"));
+      .json(new ApiResponse(201, createdUser, "user registered successfully"));
   } catch (error) {
     console.log('Error :: RegisterUser :',error.message);
-    error(error);
+    next(error);
   }
 };
 
@@ -182,11 +182,88 @@ const getCurrentUser = async (req,res,next) => {
   }
 }
 
+const updateCurrentUser = async (req, res, next) => {
+  try {
+    const {
+      username,
+      currentPassword,
+      newPassword,
+      confirmPassword,
+      profileImage,
+    } = req.body;
+
+    const hasUsernameUpdate = typeof username === "string" && username.trim() !== "";
+    const hasPasswordUpdate = typeof newPassword === "string" && newPassword.trim() !== "";
+    const hasProfileImageUpdate = profileImage !== undefined;
+
+    if (!hasUsernameUpdate && !hasPasswordUpdate && !hasProfileImageUpdate) {
+      throw new ApiError(400, "At least one account field must be updated");
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    if (hasUsernameUpdate) {
+      const normalizedUsername = username.trim().toLowerCase();
+
+      if (normalizedUsername !== user.username) {
+        const existingUser = await User.findOne({
+          username: normalizedUsername,
+          _id: { $ne: user._id },
+        });
+
+        if (existingUser) {
+          throw new ApiError(409, "Username is already taken");
+        }
+
+        user.username = normalizedUsername;
+      }
+    }
+
+    if (hasProfileImageUpdate) {
+      user.profileImage = typeof profileImage === "string" && profileImage.trim() !== "" ? profileImage.trim() : null;
+    }
+
+    if (hasPasswordUpdate) {
+      if (!currentPassword || typeof currentPassword !== "string") {
+        throw new ApiError(400, "Current password is required to change password");
+      }
+
+      if (newPassword !== confirmPassword) {
+        throw new ApiError(400, "New password and confirm password do not match");
+      }
+
+      const isCurrentPasswordValid = await user.isPasswordCorrect(currentPassword);
+
+      if (!isCurrentPasswordValid) {
+        throw new ApiError(401, "Current password is incorrect");
+      }
+
+      user.password = newPassword;
+    }
+
+    await user.save();
+
+    const updatedUser = await User.findById(user._id).select("-password -refreshToken");
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedUser, "Account updated successfully"));
+  } catch (error) {
+    console.log("Error :: updateCurrentUser:", error.message);
+    next(error);
+  }
+};
+
 export {
   getCurrentUser,
   registerUser,
   loginUser,
   logoutUser,
-  refreshAccessToken
+  refreshAccessToken,
+  updateCurrentUser,
 };
 

@@ -9,6 +9,9 @@
 	--theme-muted: #a3a3a3;
 	--theme-accent: #ffffff;
 }
+::-webkit-scrollbar {
+    display: none;
+}
 
 * {
 	box-sizing: border-box;
@@ -16,6 +19,7 @@
 
 html {
 	scroll-behavior: smooth;
+	scrollbar-width: none;
 }
 
 body {
@@ -28,6 +32,7 @@ body {
 	color: var(--theme-text);
 	font-family: "Space Grotesk", sans-serif;
 	text-rendering: optimizeLegibility;
+	-ms-overflow-style: none;
 }
 
 a {

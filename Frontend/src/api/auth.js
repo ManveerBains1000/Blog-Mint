@@ -17,11 +17,10 @@ export class AuthService {
         email:email,
         password:password,
     });
-      if (userAccount) {
-        return this.login({ email, password });
-      } else userAccount;
+      return userAccount.data;
     } catch (error) {
       console.log("service :: createAccount :: error", error);
+      throw error;
     }
   }
 
@@ -39,11 +38,21 @@ export class AuthService {
   }
 async getCurrentUser() {
   try {
-    return  await this.api.post("user/get-user");
-  } catch (error) {
+    const response = await this.api.post("user/get-user");
+    return response.data?.data ?? null;
+  } catch {
     return null;
   }
 }
+  async updateAccount(payload) {
+    try {
+      const response = await this.api.patch("user/update-account", payload);
+      return response.data?.data ?? null;
+    } catch (error) {
+      console.log("service :: updateAccount :: error", error);
+      throw error;
+    }
+  }
   async logout() {
     try {
       const response = await this.api.post("user/logout");

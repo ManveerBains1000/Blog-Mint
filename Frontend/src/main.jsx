@@ -14,6 +14,7 @@ import AddPost from './pages/AddPost.jsx'
 import Post from './pages/Post.jsx'
 import UserPosts from './pages/UserPosts.jsx'
 import Signup from './pages/Signup.jsx'
+import EditAccount from './pages/EditAccount.jsx'
 const router = createBrowserRouter([
     {
         path:'/',
@@ -72,6 +73,14 @@ const router = createBrowserRouter([
                     <AuthLayout authentication>
                         {" "}
                         <AllPosts/>
+                    </AuthLayout>
+                )
+            },
+            {
+                path:'/edit-account',
+                element:(
+                    <AuthLayout authentication>
+                        <EditAccount/>
                     </AuthLayout>
                 )
             },

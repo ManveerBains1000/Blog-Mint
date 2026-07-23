@@ -14,8 +14,7 @@ export default function Post() {
     const { slug } = useParams();
     const navigate = useNavigate();
 
-    const userData = useSelector((state) => state.authReducer.userData);
-    const currentUser = userData?.userData?.data?.data;
+    const currentUser = useSelector((state) => state.authReducer.userData);
     const isAuthor = Boolean(post && currentUser && post?.owner?._id === currentUser?._id);
  
     useEffect(() => {
@@ -32,7 +31,9 @@ export default function Post() {
         if (!post?._id) return;
 
         let isMounted = true;
-        setCommentsLoading(true);
+        queueMicrotask(() => {
+            if (isMounted) setCommentsLoading(true);
+        });
 
         postService.getCommentsByPost(post._id).then((response) => {
             if (!isMounted) return;
@@ -154,9 +155,7 @@ export default function Post() {
                                         className="w-full rounded-2xl border border-white/10 bg-[#212529] px-4 py-3 text-[#e0e1dd] outline-none transition placeholder:text-[#e0e1dd]/40 focus:border-[#778da9] focus:ring-2 focus:ring-[#778da9]/30"
                                     />
                                     <div className="flex items-center justify-between gap-3">
-                                        <p className="text-xs text-[#e0e1dd]/55">
-                                            Comments are linked to this post and saved with your account.
-                                        </p>
+                                        <div className="visibility-[hidden]"/>
                                         <Button
                                             type="submit"
                                             bgColor="bg-[#f8f9fa]"

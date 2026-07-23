@@ -1,7 +1,8 @@
 import React from 'react'
-import { Container, Logo, LogoutBtn } from '../index.js'
+import { Container, Logo } from '../index.js'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import ProfileMenu from './ProfileMenu.jsx'
 const Header = () => {
   const authStatus = useSelector((state)=>state.authReducer.status)
   const location = useLocation();
@@ -40,7 +41,7 @@ const Header = () => {
   return (
     <header className='sticky top-0 z-50 border-b border-white/10 bg-[color:rgba(5,5,5,0.72)] backdrop-blur-xl'>
       <Container>
-        <nav className='flex items-center gap-4 px-4 py-3 lg:px-0'>
+        <nav className='flex items-center gap-4 px-4 py-3 lg:px-4'>
           <div className='mr-2 flex items-center gap-3'>
             <Link to='/' className='inline-flex items-center gap-3'>
               <Logo width='28px'/>
@@ -61,9 +62,10 @@ const Header = () => {
               ) : null
             ))}
             {
-              authStatus && (<li><LogoutBtn/></li>)
+              authStatus && (<li><ProfileMenu/></li>)
             }
           </ul>
+          
         </nav>
 
       </Container>
