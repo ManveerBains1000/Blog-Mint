@@ -39,7 +39,7 @@ const Header = () => {
     }
   ]
   return (
-    <header className='sticky top-0 z-50 border-b border-white/10 bg-[color:rgba(5,5,5,0.72)] backdrop-blur-xl'>
+    <header className='sticky top-0 z-50 border-b border-white/10 bg-[rgba(5,5,5,0.72)] backdrop-blur-xl'>
       <Container>
         <nav className='flex items-center gap-4 px-4 py-3 lg:px-4'>
           <div className='mr-2 flex items-center gap-3'>
