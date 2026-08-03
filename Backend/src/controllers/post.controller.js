@@ -171,3 +171,36 @@ export const getUserPosts = async (req, res, next) => {
     next(error);
   }
 };
+// this function is used to search posts based on title or content
+export const searchPosts = async (req, res, next) => {
+  try {
+    const query = req.query.q?.trim();
+
+    if (!query) {
+      return res
+        .status(200)
+        .json(new ApiResponse(200, [], "No search query provided"));
+    }
+
+    // Escape special regex characters to prevent ReDoS
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const posts = await Post.find({
+      status: "active",
+      $or: [
+        { title: { $regex: escapedQuery, $options: "i" } },
+        { content: { $regex: escapedQuery, $options: "i" } },
+      ],
+    })
+      .populate("owner", "username email")
+      .sort({ createdAt: -1 })
+      .limit(20);
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, posts, "Search results fetched successfully"));
+  } catch (error) {
+    console.log("Error :: searchPosts Api: ", error.message);
+    next(error);
+  }
+};

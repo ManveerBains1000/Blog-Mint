@@ -16,6 +16,7 @@ import UserPosts from './pages/UserPosts.jsx'
 import Signup from './pages/Signup.jsx'
 import EditAccount from './pages/EditAccount.jsx'
 import VerifyEmail from './pages/VerifyEmail.jsx'
+import SearchPage from './pages/SearchPage.jsx'
 const router = createBrowserRouter([
     {
         path:'/',
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
                         <VerifyEmail/>
                     </AuthLayout>
                 )
+            },
+            {
+                path:"/search",
+                element: <SearchPage/>
             }
         ]
     }

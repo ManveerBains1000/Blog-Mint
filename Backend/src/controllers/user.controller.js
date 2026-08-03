@@ -428,6 +428,8 @@ const resendVerificationOTP = async (req,res,next) => {
   }
 };
 
+
+
 export {
   getCurrentUser,
   registerUser,

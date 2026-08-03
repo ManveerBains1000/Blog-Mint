@@ -1,11 +1,61 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { Container, Logo } from '../index.js'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProfileMenu from './ProfileMenu.jsx'
+import SearchBar from '../SearchBar.jsx'
+import SearchDropdown from '../SearchDropdown.jsx'
+import postService from '../../api/postApi.js'
+
 const Header = () => {
   const authStatus = useSelector((state)=>state.authReducer.status)
   const location = useLocation();
+
+  // Search state
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const handleSearch = useCallback(async (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setSearchQuery('');
+      setIsDropdownVisible(false);
+      return;
+    }
+
+    setSearchQuery(query.trim());
+    setIsSearchLoading(true);
+    setIsDropdownVisible(true);
+
+    try {
+      const response = await postService.searchPosts(query.trim());
+      if (response && response.data) {
+        setSearchResults(response.data.data || []);
+      } else {
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.log('Header search error:', error);
+      setSearchResults([]);
+    } finally {
+      setIsSearchLoading(false);
+    }
+  }, []);
+
+  const handleSearchFocus = useCallback(() => {
+    if (searchResults.length > 0) {
+      setIsDropdownVisible(true);
+    }
+  }, [searchResults]);
+
+  const handleSearchClear = useCallback(() => {
+    setSearchResults([]);
+    setSearchQuery('');
+    setIsDropdownVisible(false);
+  }, []);
+
   const navItems = [
     {
       name:'Home',
@@ -48,6 +98,23 @@ const Header = () => {
             </Link>
           </div>
           <div className='hidden h-10 w-px bg-white/10 lg:block' />
+
+          {/* Search Bar with Dropdown */}
+          <div className='relative hidden lg:block'>
+            <SearchBar
+              onSearch={handleSearch}
+              onFocus={handleSearchFocus}
+              onClear={handleSearchClear}
+            />
+            <SearchDropdown
+              results={searchResults}
+              query={searchQuery}
+              isLoading={isSearchLoading}
+              isVisible={isDropdownVisible}
+              onClose={() => setIsDropdownVisible(false)}
+            />
+          </div>
+
           <ul className='ml-auto flex flex-wrap items-center gap-2'>
             {navItems.map((item) => (
               ((authStatus && !item.guestOnly) || (!authStatus && !item.authOnly)) ? (
@@ -74,3 +141,4 @@ const Header = () => {
 }
 
 export default Header
+

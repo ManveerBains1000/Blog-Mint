@@ -14,6 +14,9 @@ import PostForm from './post-form/PostForm.jsx'
 import PostCard from './PostCard.jsx'
 import AuthLayout from './AuthLayout.jsx'
 import OTPInput from "./OTPInput.jsx";
+import SearchBar from "./SearchBar.jsx";
+import SearchDropdown from "./SearchDropdown.jsx";
+import SearchResultCard from "./SearchResultCard.jsx";
 export {
     Header,
     Footer,
@@ -30,5 +33,8 @@ export {
     PostForm,
     PostCard,
     AuthLayout,
-    OTPInput
+    OTPInput,
+    SearchBar,
+    SearchDropdown,
+    SearchResultCard
 }

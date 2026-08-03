@@ -95,6 +95,17 @@ export class Service {
         }
         return false;
     }
+
+    async searchPosts(query) {
+        try {
+            return await this.api.get(`/post/search`, {
+                params: { q: query }
+            });
+        } catch (error) {
+            console.log("searchPosts :: error :", error);
+        }
+        return false;
+    }
 }
 
 const service = new Service();

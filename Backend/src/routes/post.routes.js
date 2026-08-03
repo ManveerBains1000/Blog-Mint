@@ -8,7 +8,8 @@ import {
     deletePost,
     getPost,
     getPosts,
-    getUserPosts
+    getUserPosts,
+    searchPosts
 } from '../controllers/post.controller.js';
 
 const router = Router();
@@ -25,6 +26,8 @@ router.route("/my-posts").get(
     getUserPosts
 );
 
+// Search route MUST be above /:slug to prevent "search" being treated as a slug
+router.route("/search").get(searchPosts);
 
 router.route("/:slug").patch(
     verifyJWT,
@@ -35,5 +38,5 @@ router.route("/:slug").patch(
     deletePost
 ).get(getPost);
 
-
 export default router
+
