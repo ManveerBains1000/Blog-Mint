@@ -9,10 +9,10 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState("");
+  const [error, setError] = useState();
 
   const login = async (data) => {
-    setError("");
+    setError();
     try {
    
       const  session = await authService.login(data);
@@ -23,9 +23,11 @@ export default function Login() {
         navigate("/");
       }
     } catch (error) {
+      console.log(error)
       setError(error.message);
     }
   };
+  console.log(error)
   return (
     <div className="w-full flex items-center justify-center ">
       <div

@@ -13,6 +13,7 @@ import Login from "./Login.jsx";
 import PostForm from './post-form/PostForm.jsx'
 import PostCard from './PostCard.jsx'
 import AuthLayout from './AuthLayout.jsx'
+import OTPInput from "./OTPInput.jsx";
 export {
     Header,
     Footer,
@@ -28,5 +29,6 @@ export {
     Login,
     PostForm,
     PostCard,
-    AuthLayout
+    AuthLayout,
+    OTPInput
 }

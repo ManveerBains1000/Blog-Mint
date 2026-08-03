@@ -61,6 +61,21 @@ async getCurrentUser() {
       console.log("service :: logout :: error", error);
     }
   }
+  async verifyEmail(data) {
+    const response = await this.api.post(
+      '/user/verify-email',
+      data
+    )
+    return response.data;
+  }
+  async resendVerificationOTP(email) {
+    const response = await this.api.post(
+      '/user/resend-verification-otp',
+      {
+        email,
+      }
+    )
+  }
 }
 
 const authService = new AuthService();
