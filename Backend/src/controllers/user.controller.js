@@ -41,11 +41,10 @@ const registerUser = async (req, res, next) => {
 
     if (existedUser) {
       if (!existedUser.isVerified) {
-        const opt = await OTPService.saveOTP(
+        const otp = await OTPService.saveOTP(
           existedUser.email,
           "EMAIL_VERIFICATION"
         );
-
         await EmailService.sendVerificationEmail(
           existedUser.email,
           existedUser.username,
@@ -55,7 +54,7 @@ const registerUser = async (req, res, next) => {
         return res.status(200).json(
           new ApiResponse(
             200,
-            null,
+            existedUser,
             "Account already exists but is not verified. A new OTP has been sent."
           )
         );
@@ -115,6 +114,15 @@ const loginUser = async (req,res,next) => {
         const isValidPassword = await user.isPasswordCorrect(password);
 
         if (!isValidPassword) throw new ApiError(401,"Invalid Credentials");
+        
+        if (!user.isVerified) {
+            const otp = await OTPService.saveOTP(
+                user.email,
+                "EMAIL_VERIFICATION"
+            );
+            
+
+        }
 
         const {accessToken,refreshToken} = await generateAccessAndRefreshToken(user._id);
 
@@ -301,7 +309,7 @@ const verifyEmail = async(req,res,next) => {
     
     const {email,otp} = req.body;
 
-    if (!email?.trim() || !opt?.trim()) {
+    if (!email?.trim() || !otp?.trim()) {
       throw new ApiError(400,"Email and OTP are required");
     }
 

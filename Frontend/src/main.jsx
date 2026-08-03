@@ -15,6 +15,7 @@ import Post from './pages/Post.jsx'
 import UserPosts from './pages/UserPosts.jsx'
 import Signup from './pages/Signup.jsx'
 import EditAccount from './pages/EditAccount.jsx'
+import VerifyEmail from './pages/VerifyEmail.jsx'
 const router = createBrowserRouter([
     {
         path:'/',
@@ -89,6 +90,15 @@ const router = createBrowserRouter([
                 element:(
                     <AuthLayout authentication>
                         <UserPosts/>
+                    </AuthLayout>
+                )
+            },
+            {
+                path:"/verify-email",
+                element:(
+                    <AuthLayout authentication={false}>
+                        {" "}
+                        <VerifyEmail/>
                     </AuthLayout>
                 )
             }

@@ -1,7 +1,8 @@
 import {createClient} from 'redis';
+import { ENV } from '../utils/env.js';
 
 const redisClient = createClient({
-    url: "your url",
+    url: `rediss://default:${ENV.REDIS_REST_TOKEN}@glowing-shepherd-93400.upstash.io:6379`,
 })
 
 redisClient.on("connect",()=>{

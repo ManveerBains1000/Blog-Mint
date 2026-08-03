@@ -1,5 +1,5 @@
 import transporter from "../config/mail.js";
-
+import { ENV } from "../utils/env.js";
 class EmailService {
 
     async sendVerificationEmail(email, username, otp) {
@@ -53,7 +53,7 @@ class EmailService {
         `;
 
         await transporter.sendMail({
-            from: process.env.MAIL_FROM,
+            from: ENV.MAIL_FROM,
             to: email,
             subject: "Verify your Blog Mint account",
             html,

@@ -20,5 +20,6 @@ export const ENV = {
     MAIL_PORT:process.env.MAIL_PORT,
     MAIL_USER: process.env.MAIL_USER,
     MAIL_PASS: process.env.MAIL_PASS,
-    MAIL_FROM: process.env.MAIL_FROM
+    MAIL_FROM: process.env.MAIL_FROM,
+    REDIS_REST_TOKEN: process.env.REDIS_REST_TOKEN,
 }
